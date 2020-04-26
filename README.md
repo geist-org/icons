@@ -8,6 +8,8 @@ React icon components based on [Vercel Design](https://vercel.com/design)
 ## Install
 
 ```
+$ yarn add @zeit-ui/react-icons
+OR
 $ npm install @zeit-ui/react-icons
 ```
 
