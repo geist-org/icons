@@ -56,7 +56,6 @@ export default ${componentName};`
       minified: true
     }).code
   )
-  console.log('✨ Done.')
 })()
 
 const replaceAll = (target: string, find: string, replace): string =>
