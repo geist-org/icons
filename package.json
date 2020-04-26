@@ -1,0 +1,60 @@
+{
+  "name": "@zeit-ui/react-icons",
+  "description": "React icon components based on Vercel Design",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "Ofek Ashery",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn build",
+    "build": "ts-node src/generate.ts",
+    "test": "ava"
+  },
+  "files": [
+    "/dist"
+  ],
+  "dependencies": {
+    "@zeit-ui/react": "^1.0.0-rc.2",
+    "react": "^16.13.1"
+  },
+  "devDependencies": {
+    "@ava/babel": "^1.0.1",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "@babel/preset-react": "^7.9.4",
+    "@types/babel__core": "^7.1.7",
+    "@types/fs-extra": "^8.1.0",
+    "@types/jsdom": "^16.2.1",
+    "@types/node": "^13.13.2",
+    "@types/node-fetch": "^2.5.7",
+    "ava": "^3.7.1",
+    "browser-env": "^3.3.0",
+    "fs-extra": "^9.0.0",
+    "jsdom": "^16.2.2",
+    "node-fetch": "^2.6.0",
+    "react-dom": "^16.13.1",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3"
+  },
+  "ava": {
+    "babel": {
+      "testOptions": {
+        "presets": [
+          "@babel/preset-react",
+          "@ava/babel/stage-4"
+        ]
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zeit-ui/react-icons.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zeit-ui/react-icons/issues"
+  },
+  "homepage": "https://react.zeit-ui.co"
+}
