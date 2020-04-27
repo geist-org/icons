@@ -2,19 +2,18 @@
   "name": "@zeit-ui/react-icons",
   "description": "React icon components based on Vercel Design",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
   "author": "Ofek Ashery",
   "license": "MIT",
   "scripts": {
     "start": "yarn build",
-    "build": "ts-node src/generate.ts",
-    "test": "ava"
+    "build": "ts-node src/generate.ts && node scripts/pre-release.js",
+    "test": "ava",
+    "release": "yarn build && cd dist && yarn publish --access public",
+    "prepublishOnly": "node scripts/check-release.js"
   },
-  "files": [
-    "/dist"
-  ],
   "peerDependencies": {
     "@zeit-ui/react": ">=1.0.0-rc.3",
     "react": ">=16.13.0"
