@@ -1,16 +1,18 @@
 import fetch from 'node-fetch'
 import { JSDOM } from 'jsdom'
 import fs from 'fs-extra'
+import path from 'path'
 import { transform } from '@babel/core'
 import {
   moduleBabelConfig, allModulesBabelConfig, replaceAll,
-  toHumpName, toComponentName,
+  toHumpName, toComponentName, makeBasicDefinition,
 } from './utils'
 
-const sourceFile = `${__dirname}/../.source`
+const outputDir = path.join(__dirname, '../', 'dist')
+const sourceFile = path.join(__dirname, '../', '.source')
 
 export default (async () => {
-  await fs.remove('./dist')
+  await fs.remove(outputDir)
   let html = ''
   try {
     html = await fs.readFile(sourceFile, 'utf8')
@@ -22,12 +24,7 @@ export default (async () => {
 
   const document = new JSDOM(html).window.document
   let exports = ''
-  let definition = `import React from 'react';
-interface Props extends React.SVGProps {
-  color?: string;
-  size?: number;
-}
-type Icon = React.FunctionComponent<Props>;\n`
+  let definition = makeBasicDefinition()
 
   const icons = document.querySelectorAll('.geist-list .icon')
   const promises = Array.from(icons).map((icon: Element) => {
@@ -48,18 +45,25 @@ export default ${componentName};`
 
     exports += `export { default as ${componentName} } from './${fileName}';\n`
     definition += `export const ${componentName}: Icon;\n`
+  
+    const singleDefinition = `${makeBasicDefinition()}declare const ${componentName}: Icon;
+export default ${componentName}\n`
 
+    fs.outputFile(
+      path.join(outputDir, `${fileName}.d.ts`),
+      singleDefinition,
+    )
     return fs.outputFile(
-      `${__dirname}/../dist/${fileName}.js`,
-      transform(component, moduleBabelConfig).code
+      path.join(outputDir, `${fileName}.js`),
+      transform(component, moduleBabelConfig).code,
     )
   })
 
   await Promise.all(promises)
-  await fs.outputFile(`${__dirname}/../dist/index.d.ts`, definition)
+  await fs.outputFile(path.join(outputDir, 'index.d.ts'), definition)
   await fs.outputFile(
-    `${__dirname}/../dist/index.js`,
-    transform(exports, allModulesBabelConfig).code
+    path.join(outputDir, 'index.js'),
+    transform(exports, allModulesBabelConfig).code,
   )
 })()
 
