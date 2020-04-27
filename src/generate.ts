@@ -25,6 +25,7 @@ export default (async () => {
   const document = new JSDOM(html).window.document
   let exports = ''
   let definition = makeBasicDefinition()
+  const singleDefinition = `${makeBasicDefinition()}declare const _default: Icon;\nexport default _default\n`
 
   const icons = document.querySelectorAll('.geist-list .icon')
   const promises = Array.from(icons).map((icon: Element) => {
@@ -45,8 +46,6 @@ export default ${componentName};`
 
     exports += `export { default as ${componentName} } from './${fileName}';\n`
     definition += `export const ${componentName}: Icon;\n`
-    
-    const singleDefinition = `${makeBasicDefinition()}declare const _default: Icon;\nexport default _default\n`
     
     fs.outputFile(
       path.join(outputDir, `${fileName}.d.ts`),
