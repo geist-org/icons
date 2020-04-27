@@ -17,3 +17,14 @@ export const replaceAll = (
   return target.split(find).join(replace)
 }
 
+export const toHumpName = (name: string): string => {
+  return name.replace(/-(.)/g, (g) => g[1].toUpperCase())
+}
+
+export const toComponentName = (name: string): string => {
+  const first = name.slice(0, 1).toUpperCase()
+  const last = toHumpName(name.slice(1))
+  return `${first}${last}`
+}
+
+
