@@ -27,4 +27,12 @@ export const toComponentName = (name: string): string => {
   return `${first}${last}`
 }
 
+export const makeBasicDefinition = (): string => {
+  return `import React from 'react';
+interface Props extends React.SVGProps {
+  color?: string;
+  size?: number;
+}
+type Icon = React.FunctionComponent<Props>;\n`
+}
 
