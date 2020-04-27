@@ -27,9 +27,7 @@ type Icon = React.FunctionComponent<Props>;\n`
     svg.removeAttribute('style')
 
     const component = `import React from 'react';
-import { useTheme } from '@zeit-ui/react';
 const ${componentName} = ({ color, size, ...props }) => {
-  const theme = useTheme();
   const sizeProps = size ? { height: size, width: size } : {};
   return ${parseSvg(svg.outerHTML, styles)};
 }
@@ -69,9 +67,10 @@ const parseSvg = (svg: string, styles: any) => {
   const stylesString = JSON.stringify(styles)
   svg = svg.replace(/<svg([^>]+)>/, `<svg$1 {...props} {...sizeProps} style={${stylesString}}>`)
 
-  // Use zeit-ui theme
-  svg = replaceAll(svg, '"var(--geist-foreground)"', "color || 'currentColor'")
-  svg = replaceAll(svg, '"var(--geist-background)"', 'theme.palette.background')
+  // With ZEIT UI
+  // Refer to: https://github.com/zeit-ui/react/pull/139/files#diff-b174da32165cea69128b525762abb680R22
+  svg = replaceAll(svg, '"var(--geist-foreground)"', 'color || "currentColor"')
+  svg = replaceAll(svg, '"var(--geist-background)"', '"var(--zeit-icons-background)"')
   return svg
 }
 
