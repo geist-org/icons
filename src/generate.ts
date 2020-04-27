@@ -2,12 +2,21 @@ import fetch from 'node-fetch'
 import { JSDOM } from 'jsdom'
 import fs from 'fs-extra'
 import { transform } from '@babel/core'
-import { moduleBabelConfig, allModulesBabelConfig,replaceAll } from './utils'
+import { moduleBabelConfig, allModulesBabelConfig, replaceAll } from './utils'
+
+const sourceFile = `${__dirname}/../source.html`
 
 export default (async () => {
   await fs.remove('./dist')
-  const res = await fetch('https://vercel.com/design/icons')
-  const html = await res.text()
+  let html = ''
+  try {
+    html = await fs.readFile(sourceFile, 'utf8')
+  } catch (err) {
+    const res = await fetch('https://vercel.com/design/icons')
+    html = await res.text()
+    fs.writeFile(sourceFile, html).catch(console.log)
+  }
+
   const document = new JSDOM(html).window.document
   let exports = ''
   let definition = `import React from 'react';
