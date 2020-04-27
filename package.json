@@ -15,9 +15,9 @@
   "files": [
     "/dist"
   ],
-  "dependencies": {
-    "@zeit-ui/react": "^1.0.0-rc.2",
-    "react": "^16.13.1"
+  "peerDependencies": {
+    "@zeit-ui/react": ">=1.0.0-rc.2",
+    "react": ">=16.13.0"
   },
   "devDependencies": {
     "@ava/babel": "^1.0.1",
