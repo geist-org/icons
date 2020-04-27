@@ -1,7 +1,8 @@
 import fetch from 'node-fetch'
 import { JSDOM } from 'jsdom'
-import * as fs from 'fs-extra'
-import * as babel from '@babel/core'
+import fs from 'fs-extra'
+import { transform } from '@babel/core'
+import { moduleBabelConfig, allModulesBabelConfig,replaceAll } from './utils'
 
 export default (async () => {
   await fs.remove('./dist')
@@ -38,10 +39,7 @@ export default ${componentName};`
 
     return fs.outputFile(
       `${__dirname}/../dist/${componentName}.js`,
-      babel.transform(component, {
-        presets: ['@babel/preset-react', '@babel/preset-env'],
-        minified: true
-      }).code
+      transform(component, moduleBabelConfig).code
     )
   })
 
@@ -49,15 +47,9 @@ export default ${componentName};`
   await fs.outputFile(`${__dirname}/../dist/index.d.ts`, definition)
   await fs.outputFile(
     `${__dirname}/../dist/index.js`,
-    babel.transform(exports, {
-      presets: ['@babel/preset-env'],
-      minified: true
-    }).code
+    transform(exports, allModulesBabelConfig).code
   )
 })()
-
-const replaceAll = (target: string, find: string, replace): string =>
-  target.split(find).join(replace)
 
 const parseSvg = (svg: string, styles: any) => {
   // Reactify attrs
