@@ -2,7 +2,10 @@ import fetch from 'node-fetch'
 import { JSDOM } from 'jsdom'
 import fs from 'fs-extra'
 import { transform } from '@babel/core'
-import { moduleBabelConfig, allModulesBabelConfig, replaceAll } from './utils'
+import {
+  moduleBabelConfig, allModulesBabelConfig, replaceAll,
+  toHumpName, toComponentName,
+} from './utils'
 
 const sourceFile = `${__dirname}/../.source`
 
@@ -29,8 +32,8 @@ type Icon = React.FunctionComponent<Props>;\n`
   const icons = document.querySelectorAll('.geist-list .icon')
   const promises = Array.from(icons).map((icon: Element) => {
     const name: string = icon.querySelector('.geist-text').textContent
-    const componentName =
-      name.slice(0, 1).toUpperCase() + name.slice(1).replace(/-(.)/g, (g) => g[1].toUpperCase())
+    const componentName = toComponentName(name)
+    const fileName = toHumpName(name)
 
     const svg = icon.querySelector('svg')
     const styles = parseStyles(svg.getAttribute('style'))
@@ -43,11 +46,11 @@ const ${componentName} = ({ color, size, ...props }) => {
 }
 export default ${componentName};`
 
-    exports += `export { default as ${componentName} } from './${componentName}';\n`
+    exports += `export { default as ${componentName} } from './${fileName}';\n`
     definition += `export const ${componentName}: Icon;\n`
 
     return fs.outputFile(
-      `${__dirname}/../dist/${componentName}.js`,
+      `${__dirname}/../dist/${fileName}.js`,
       transform(component, moduleBabelConfig).code
     )
   })
