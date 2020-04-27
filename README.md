@@ -31,18 +31,31 @@ Icons can be configured with `color`, `size` and any SVG props:
 ```ts
 <GitHub color="red" size={36} />
 <GitHub color="blue" strokeWidth={2} />
-
 ```
 
-You can also include the whole icon pack:
+## Other ways
+
+1. You can include the whole icon pack:
 
 ```tsx
-import React from 'react'
 import * as Icon from '@zeit-ui/react-icons'
 
 const App = () => {
   return <Icon.GitHub />
 }
-
-export default App
 ```
+
+2. You can include single icon:
+
+```tsx
+import Activity from '@zeit-ui/react-icons/activity'
+
+const App = () => {
+  return <Activity />
+}
+```
+
+<br/>
+
+## LICENSE
+[MIT](https://raw.githubusercontent.com/zeit-ui/react-icons/master/LICENSE)
