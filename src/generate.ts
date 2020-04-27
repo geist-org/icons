@@ -4,7 +4,7 @@ import fs from 'fs-extra'
 import { transform } from '@babel/core'
 import { moduleBabelConfig, allModulesBabelConfig, replaceAll } from './utils'
 
-const sourceFile = `${__dirname}/../source.html`
+const sourceFile = `${__dirname}/../.source`
 
 export default (async () => {
   await fs.remove('./dist')
