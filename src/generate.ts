@@ -69,7 +69,7 @@ export default ${componentName}\n`
 
 const parseSvg = (svg: string, styles: any) => {
   // Reactify attrs
-  svg = svg.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+  svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, (g) => g[1].toUpperCase())
 
   // Inject props
   const stylesString = JSON.stringify(styles)
