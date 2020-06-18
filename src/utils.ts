@@ -1,7 +1,14 @@
 
 export const moduleBabelConfig = {
-  presets: ['@babel/preset-react', '@babel/preset-env'],
-  minified: true
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+  ],
+  plugins: [
+    ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
+    '@babel/plugin-transform-runtime',
+  ],
+  minified: true,
 }
 
 export const allModulesBabelConfig = {

@@ -2,10 +2,16 @@ import fetch from 'node-fetch'
 import { JSDOM } from 'jsdom'
 import fs from 'fs-extra'
 import path from 'path'
+import SVGO from 'svgo/lib/svgo'
+import svgoConfigs from './svgo.config'
 import { transform } from '@babel/core'
 import {
-  moduleBabelConfig, allModulesBabelConfig, replaceAll,
-  toHumpName, toComponentName, makeBasicDefinition,
+  moduleBabelConfig,
+  allModulesBabelConfig,
+  replaceAll,
+  toHumpName,
+  toComponentName,
+  makeBasicDefinition
 } from './utils'
 
 const outputDir = path.join(__dirname, '../', 'dist')
@@ -13,72 +19,67 @@ const sourceFile = path.join(__dirname, '../', '.source')
 
 export default (async () => {
   await fs.remove(outputDir)
-  let html = ''
-  try {
-    html = await fs.readFile(sourceFile, 'utf8')
-  } catch (err) {
-    const res = await fetch('https://vercel.com/design/icons')
-    html = await res.text()
-    fs.writeFile(sourceFile, html).catch(console.log)
-  }
-
+  const html = await fs.readFile(sourceFile, 'utf8')
   const document = new JSDOM(html).window.document
+
   let exports = ''
   let definition = makeBasicDefinition()
 
   const icons = document.querySelectorAll('.geist-list .icon')
-  const promises = Array.from(icons).map((icon: Element) => {
+  const svgo = new SVGO(svgoConfigs)
+  const promises = Array.from(icons).map(async (icon: Element) => {
     const name: string = icon.querySelector('.geist-text').textContent
     const componentName = toComponentName(name)
     const fileName = toHumpName(name)
 
     const svg = icon.querySelector('svg')
+    const { data: optimizedSvgString } = await svgo.optimize(svg.outerHTML)
     const styles = parseStyles(svg.getAttribute('style'))
-    svg.removeAttribute('style')
 
     const component = `import React from 'react';
-const ${componentName} = ({ color, size, ...props }) => {
-  const sizeProps = size ? { height: size, width: size } : {};
-  return ${parseSvg(svg.outerHTML, styles)};
+const ${componentName} = ({ color = 'currentColor', size = 24, ...props }) => {
+  return ${parseSvg(optimizedSvgString, styles)};
 }
 export default ${componentName};`
 
     exports += `export { default as ${componentName} } from './${fileName}';\n`
     definition += `export const ${componentName}: Icon;\n`
-  
-    const singleDefinition = `${makeBasicDefinition()}declare const ${componentName}: Icon;
-export default ${componentName}\n`
 
-    fs.outputFile(
-      path.join(outputDir, `${fileName}.d.ts`),
-      singleDefinition,
-    )
-    return fs.outputFile(
-      path.join(outputDir, `${fileName}.js`),
-      transform(component, moduleBabelConfig).code,
-    )
+    const componentDefinition = `${makeBasicDefinition()}declare const ${componentName}: Icon;
+export default ${componentName}\n`
+    const componentCode = transform(component, moduleBabelConfig).code
+    await fs.outputFile(path.join(outputDir, `${fileName}.d.ts`), componentDefinition)
+    await fs.outputFile(path.join(outputDir, `${fileName}.js`), componentCode)
   })
 
   await Promise.all(promises)
+  const allModulesCode = transform(exports, allModulesBabelConfig).code
   await fs.outputFile(path.join(outputDir, 'index.d.ts'), definition)
-  await fs.outputFile(
-    path.join(outputDir, 'index.js'),
-    transform(exports, allModulesBabelConfig).code,
-  )
+  await fs.outputFile(path.join(outputDir, 'index.js'), allModulesCode)
 })()
 
 const parseSvg = (svg: string, styles: any) => {
-  // Reactify attrs
-  svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, (g) => g[1].toUpperCase())
+  const getSpecifiedColorVar = (val: string | undefined, ident: string) => {
+    if (!val) return '""'
+    return val.includes(ident) ? '{color}' : '"var(--zeit-icons-background)"'
+  }
 
-  // Inject props
-  const stylesString = JSON.stringify(styles)
-  svg = svg.replace(/<svg([^>]+)>/, `<svg$1 {...props} {...sizeProps} style={${stylesString}}>`)
+  svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, (g) => g[1].toUpperCase())
+  svg = svg.replace(/<svg([^>]+)>/, `<svg$1 {...props} height={size} width={size} style={{color}}>`)
+
+  const geistFillColor = getSpecifiedColorVar(styles['--geist-fill'], 'current')
+  const geistStrokeColor = getSpecifiedColorVar(styles['--geist-stroke'], 'current')
 
   // With ZEIT UI
   // Refer to: https://github.com/zeit-ui/react/pull/139/files#diff-b174da32165cea69128b525762abb680R22
-  svg = replaceAll(svg, '"var(--geist-foreground)"', 'color || "currentColor"')
+  svg = replaceAll(svg, '"var(--geist-foreground)"', '{color}')
   svg = replaceAll(svg, '"var(--geist-background)"', '"var(--zeit-icons-background)"')
+
+  // Reset dynamic colors
+  // In a few icons, the semantics of 'fill' and 'stroke' are not correct,
+  // they maybe forced to override by style.
+  svg = replaceAll(svg, '"var(--geist-fill)"', geistFillColor)
+  svg = replaceAll(svg, '"var(--geist-stroke)"', geistStrokeColor)
   return svg
 }
 
