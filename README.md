@@ -1,23 +1,23 @@
 # React Icons
 
-React icon components based on [Vercel Design](https://vercel.com/design)
+React icon components for Geist UI.
 
-[![npm Version](https://img.shields.io/npm/v/@zeit-ui/react-icons)](https://www.npmjs.com/package/@zeit-ui/react-icons)
-[![Build](https://img.shields.io/github/workflow/status/zeit-ui/react-icons/Build)](https://github.com/zeit-ui/react-icons/actions?query=workflow%3ABuild)
+[![npm Version](https://img.shields.io/npm/v/@geist-ui/react-icons)](https://www.npmjs.com/package/@geist-ui/react-icons)
+[![Build](https://img.shields.io/github/workflow/status/geist-org/react-icons/Build)](https://github.com/geist-org/react-icons/actions?query=workflow%3ABuild)
 
 ## Install
 
 ```
-$ yarn add @zeit-ui/react-icons
+$ yarn add @geist-ui/react-icons
 OR
-$ npm install @zeit-ui/react-icons
+$ npm install @geist-ui/react-icons
 ```
 
 ## Usage
 
 ```tsx
 import React from 'react'
-import { GitHub } from '@zeit-ui/react-icons'
+import { GitHub } from '@geist-ui/react-icons'
 
 const App = () => {
   return <GitHub />
@@ -38,17 +38,17 @@ Icons can be configured with `color`, `size` and any SVG props:
 1. You can include the whole icon pack:
 
 ```tsx
-import * as Icon from '@zeit-ui/react-icons'
+import * as Icons from '@geist-ui/react-icons'
 
 const App = () => {
-  return <Icon.GitHub />
+  return <Icons.GitHub />
 }
 ```
 
 2. You can include single icon:
 
 ```tsx
-import Activity from '@zeit-ui/react-icons/activity'
+import Activity from '@geist-ui/react-icons/activity'
 
 const App = () => {
   return <Activity />
@@ -58,4 +58,4 @@ const App = () => {
 <br/>
 
 ## LICENSE
-[MIT](https://raw.githubusercontent.com/zeit-ui/react-icons/master/LICENSE)
+[MIT](https://raw.githubusercontent.com/geist-org/react-icons/master/LICENSE)

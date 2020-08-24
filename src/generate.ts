@@ -61,7 +61,7 @@ export default ${componentName}\n`
 const parseSvg = (svg: string, styles: any) => {
   const getSpecifiedColorVar = (val: string | undefined, ident: string) => {
     if (!val) return '""'
-    return val.includes(ident) ? '{color}' : '"var(--zeit-icons-background)"'
+    return val.includes(ident) ? '{color}' : '"var(--geist-icons-background)"'
   }
 
   svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, (g) => g[1].toUpperCase())
@@ -70,10 +70,10 @@ const parseSvg = (svg: string, styles: any) => {
   const geistFillColor = getSpecifiedColorVar(styles['--geist-fill'], 'current')
   const geistStrokeColor = getSpecifiedColorVar(styles['--geist-stroke'], 'current')
 
-  // With ZEIT UI
-  // Refer to: https://github.com/zeit-ui/react/pull/139/files#diff-b174da32165cea69128b525762abb680R22
+  // With Geist UI
+  // Refer to: https://github.com/geist-org/react/pull/139/files#diff-b174da32165cea69128b525762abb680R22
   svg = replaceAll(svg, '"var(--geist-foreground)"', '{color}')
-  svg = replaceAll(svg, '"var(--geist-background)"', '"var(--zeit-icons-background)"')
+  svg = replaceAll(svg, '"var(--geist-background)"', '"var(--geist-icons-background)"')
 
   // Reset dynamic colors
   // In a few icons, the semantics of 'fill' and 'stroke' are not correct,

@@ -1,5 +1,5 @@
 {
-  "name": "zeit-icons-example",
+  "name": "geist-icons-example",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -8,8 +8,8 @@
     "build": "react-scripts build"
   },
   "dependencies": {
-    "@zeit-ui/react-icons": "file:../../dist",
-    "@zeit-ui/react": "^1.0.0-rc.3",
+    "@geist-ui/react-icons": "file:../../dist",
+    "@geist-ui/react": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
