@@ -17,10 +17,10 @@ $ npm install @geist-ui/react-icons
 
 ```tsx
 import React from 'react'
-import { GitHub } from '@geist-ui/react-icons'
+import { Code } from '@geist-ui/react-icons'
 
 const App = () => {
-  return <GitHub />
+  return <Code />
 }
 
 export default App
@@ -29,8 +29,8 @@ export default App
 Icons can be configured with `color`, `size` and any SVG props:
 
 ```ts
-<GitHub color="red" size={36} />
-<GitHub color="blue" strokeWidth={2} />
+<Code color="red" size={36} />
+<Code color="blue" strokeWidth={2} />
 ```
 
 ## Other ways
@@ -41,17 +41,17 @@ Icons can be configured with `color`, `size` and any SVG props:
 import * as Icons from '@geist-ui/react-icons'
 
 const App = () => {
-  return <Icons.GitHub />
+  return <Icons.Code />
 }
 ```
 
 2. You can include single icon:
 
 ```tsx
-import Activity from '@geist-ui/react-icons/activity'
+import Code from '@geist-ui/react-icons/code'
 
 const App = () => {
-  return <Activity />
+  return <Code />
 }
 ```
 
