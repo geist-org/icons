@@ -58,4 +58,5 @@ const App = () => {
 <br/>
 
 ## LICENSE
+
 [MIT](https://raw.githubusercontent.com/geist-org/react-icons/master/LICENSE)

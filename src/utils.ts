@@ -1,9 +1,5 @@
-
 export const moduleBabelConfig = {
-  presets: [
-    '@babel/preset-env',
-    '@babel/preset-react',
-  ],
+  presets: ['@babel/preset-env', '@babel/preset-react'],
   plugins: [
     ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
     '@babel/plugin-transform-runtime',
@@ -13,19 +9,15 @@ export const moduleBabelConfig = {
 
 export const allModulesBabelConfig = {
   presets: ['@babel/preset-env'],
-  minified: true
+  minified: true,
 }
 
-export const replaceAll = (
-  target: string,
-  find: string,
-  replace: string,
-): string => {
+export const replaceAll = (target: string, find: string, replace: string): string => {
   return target.split(find).join(replace)
 }
 
 export const toHumpName = (name: string): string => {
-  return name.replace(/-(.)/g, (g) => g[1].toUpperCase())
+  return name.replace(/-(.)/g, g => g[1].toUpperCase())
 }
 
 export const toComponentName = (name: string): string => {
@@ -38,8 +30,7 @@ export const makeBasicDefinition = (): string => {
   return `import React from 'react';
 interface Props extends React.SVGProps {
   color?: string;
-  size?: number;
+  size?: number | string;
 }
 type Icon = React.FunctionComponent<Props>;\n`
 }
-
