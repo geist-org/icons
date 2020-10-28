@@ -11,7 +11,7 @@ import {
   replaceAll,
   toHumpName,
   toComponentName,
-  makeBasicDefinition
+  makeBasicDefinition,
 } from './utils'
 
 const outputDir = path.join(__dirname, '../', 'dist')
@@ -64,7 +64,7 @@ const parseSvg = (svg: string, styles: any) => {
     return val.includes(ident) ? '{color}' : '"var(--geist-icons-background)"'
   }
 
-  svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, (g) => g[1].toUpperCase())
+  svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, g => g[1].toUpperCase())
   svg = svg.replace(/<svg([^>]+)>/, `<svg$1 {...props} height={size} width={size} style={{color}}>`)
 
   const geistFillColor = getSpecifiedColorVar(styles['--geist-fill'], 'current')
@@ -89,7 +89,7 @@ const parseStyles = (inlineStyle = '') =>
     let [property, value] = stylePropertyValue
       .split(/^([^:]+):/)
       .filter((val, i) => i > 0)
-      .map((item) => item.trim().toLowerCase())
+      .map(item => item.trim().toLowerCase())
 
     styleObject[property] = value
     return styleObject

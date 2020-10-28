@@ -9,7 +9,7 @@ const App = () => {
   return (
     <GeistUIProvider theme={{ type: dark ? 'dark' : 'light' }}>
       <CSSBaseline />
-      <Home onThemeChange={() => setDark((last) => !last)} />
+      <Home onThemeChange={() => setDark(last => !last)} />
     </GeistUIProvider>
   )
 }
@@ -18,7 +18,7 @@ ReactDom.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('app')
+  document.getElementById('app'),
 )
 
 export default App
