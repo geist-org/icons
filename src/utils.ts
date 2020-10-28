@@ -28,7 +28,7 @@ export const toComponentName = (name: string): string => {
 
 export const makeBasicDefinition = (): string => {
   return `import React from 'react';
-interface Props extends React.SVGProps {
+interface Props extends React.SVGProps<SVGElement> {
   color?: string;
   size?: number | string;
 }
