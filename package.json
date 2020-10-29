@@ -1,7 +1,7 @@
 {
   "name": "@geist-ui/react-icons",
   "description": "React icon components for Geist UI.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "module": "index.js",
   "types": "index.d.ts",
