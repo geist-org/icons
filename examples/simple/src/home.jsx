@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Spacer, Button, useTheme } from '@geist-ui/react'
-import { Activity, Github, Twitch, Headphones } from '@geist-ui/react-icons'
+import { Activity, Github, Twitch, Headphones } from '@geist-ui/icons'
 
 const Home = ({ onThemeChange }) => {
   const theme = useTheme()

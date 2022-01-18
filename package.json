@@ -1,6 +1,6 @@
 {
-  "name": "@geist-ui/react-icons",
-  "description": "React icon components for Geist UI.",
+  "name": "@geist-ui/icons",
+  "description": "The icon components for Geist UI.",
   "version": "1.0.1",
   "main": "index.js",
   "module": "index.js",
@@ -58,10 +58,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geist-org/react-icons.git"
+    "url": "git+https://github.com/geist-org/icons.git"
   },
   "bugs": {
-    "url": "https://github.com/geist-org/react-icons/issues"
+    "url": "https://github.com/geist-org/icons/issues"
   },
-  "homepage": "https://react.geist-ui.dev"
+  "homepage": "https://icons.geist-ui.dev",
+  "dependencies": {}
 }
