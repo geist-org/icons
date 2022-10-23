@@ -37,7 +37,7 @@ export default (async () => {
     const styles = parseStyles(svg.getAttribute('style'))
 
     const component = `import React from 'react';
-const ${componentName} = ({ color = 'currentColor', size = 24, ...props }) => {
+const ${componentName} = ({ color = 'currentColor', size = 24, style, ...props }) => {
   return ${parseSvg(optimizedSvgString, styles)};
 }
 export default ${componentName};`
@@ -65,7 +65,7 @@ const parseSvg = (svg: string, styles: any) => {
   }
 
   svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, g => g[1].toUpperCase())
-  svg = svg.replace(/<svg([^>]+)>/, `<svg$1 {...props} height={size} width={size} style={{color}}>`)
+  svg = svg.replace(/<svg([^>]+)>/, `<svg$1 {...props} height={size} width={size} style={{...style,color}}>`)
 
   const geistFillColor = getSpecifiedColorVar(styles['--geist-fill'], 'current')
   const geistStrokeColor = getSpecifiedColorVar(styles['--geist-stroke'], 'current')
