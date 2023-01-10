@@ -27,6 +27,7 @@ type Icon = React.FunctionComponent<Props>;\n`
 }
 
 export const defineComponent = (name: string, svg: string): string => {
+  svg = svg.replace(/-([a-z])(?=[a-z\-]*[=\s/>])/g, g => g[1].toUpperCase())
   svg = svg.replace(
     /<svg([^>]+)>/,
     `<svg$1 {...props} height={size} width={size} style={{...style,color}}>`,

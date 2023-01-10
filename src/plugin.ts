@@ -66,7 +66,7 @@ export const svgoOptions: Config = {
     {
       name: 'removeAttrs',
       params: {
-        attrs: ['svg:width', 'svg:height', 'svg:color'],
+        attrs: ['svg:width', 'svg:height', 'svg:color', 'svg:data-testid'],
       },
     },
     svg,
