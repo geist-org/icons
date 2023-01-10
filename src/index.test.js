@@ -1,12 +1,12 @@
 import test from 'ava'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { JSDOM } from 'jsdom'
+import { Window } from 'happy-dom'
 import * as Icons from '../dist'
 
-const jsdom = new JSDOM()
-global.window = jsdom.window
-global.document = window.document
+const happdom = new Window()
+global.window = happdom.window
+global.document = happdom.document
 
 test('There are icons', t => {
   t.true(Object.values(Icons).length > 0)
@@ -29,7 +29,7 @@ test('Render icon with size', t => {
 test('Render icon with color', t => {
   const div = document.createElement('div')
   ReactDOM.render(<Icons.Github color="#7a16ff" />, div)
-  t.is(div.firstChild.style.color, 'rgb(122, 22, 255)')
+  t.is(div.firstChild.style.color, '#7a16ff')
 })
 
 test('Render icon with props', t => {
