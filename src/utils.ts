@@ -1,15 +1,10 @@
-export const moduleBabelConfig = {
-  presets: ['@babel/preset-env', '@babel/preset-react'],
-  plugins: [
-    ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
-    '@babel/plugin-transform-runtime',
-  ],
-  minified: true,
-}
+import type { TransformOptions } from '@babel/core'
 
-export const allModulesBabelConfig = {
-  presets: ['@babel/preset-env'],
-  minified: true,
+export const getBabelConfig = (esm = true): TransformOptions => {
+  return {
+    presets: [['@babel/preset-env', { modules: esm ? false : 'cjs' }], '@babel/preset-react'],
+    minified: true,
+  }
 }
 
 export const toHumpName = (name: string): string => {
@@ -32,10 +27,10 @@ type Icon = React.FunctionComponent<Props>;\n`
 }
 
 export const defineComponent = (name: string, svg: string): string => {
-  svg = svg
-    .replace(/width="{size}"/, 'width={size}')
-    .replace(/height="{size}"/, 'height={size}')
-    .replace(/style="{{\.\.\.style,color}}"/, 'style={{ ...style, color }}')
+  svg = svg.replace(
+    /<svg([^>]+)>/,
+    `<svg$1 {...props} height={size} width={size} style={{...style,color}}>`,
+  )
   return `import React from 'react';\n
   const ${name} = ({ color = 'currentColor', size = 24, style, ...props}) => {
     return ${svg};

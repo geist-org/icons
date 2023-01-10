@@ -45,13 +45,6 @@ const svg: CustomPlugin = {
             resetNodeAttribute(node, 'stroke', node => (node.attributes.stroke = geistStrokeColor))
           }
         },
-        exit: node => {
-          if (node.name === 'svg') {
-            if (node.attributes.height) node.attributes.height = '{size}'
-            if (node.attributes.width) node.attributes.width = '{size}'
-            node.attributes.style = '{{...style,color}}'
-          }
-        },
       },
     }
   },
@@ -73,7 +66,7 @@ export const svgoOptions: Config = {
     {
       name: 'removeAttrs',
       params: {
-        attrs: ['svg:color', 'svg:data-testid'],
+        attrs: ['svg:width', 'svg:height', 'svg:color'],
       },
     },
     svg,

@@ -5,12 +5,11 @@ import { optimize } from 'svgo'
 import { transform } from '@babel/core'
 import { svgoOptions } from './plugin'
 import {
-  moduleBabelConfig,
-  allModulesBabelConfig,
   toHumpName,
   toComponentName,
   makeBasicDefinition,
   defineComponent,
+  getBabelConfig,
 } from './utils'
 
 import type { IElement as Element } from 'happy-dom'
@@ -46,23 +45,27 @@ export default (async () => {
     throw new Error("\nCan't found any svg elements. please check the document selector.\n")
   let definition = makeBasicDefinition()
   let exports = ''
+  const esmBabelConfig = getBabelConfig()
+  const cjsBabelConfig = getBabelConfig(false)
   await Promise.all(
     elements.map(async element => {
       const { name, svg } = formatSvg(element)
       const componentName = toComponentName(name)
       const component = defineComponent(componentName, svg)
-      const declare = `${makeBasicDefinition()}declare const ${componentName}:Icon;\n
-      export default ${componentName};\n
-      `
+      const declare = `${makeBasicDefinition()}declare const ${componentName}:Icon;\nexport default ${componentName};\n`
       const fileName = toHumpName(name)
       definition += `export const ${componentName}: Icon;\n`
       exports += `export { default as ${componentName} } from './${fileName}';\n`
-      const code = transform(component, moduleBabelConfig).code
+      const cjsCode = transform(component, cjsBabelConfig).code
+      const esmCode = transform(component, esmBabelConfig).code
       await fs.outputFile(path.join(outputDir, `${fileName}.d.ts`), declare)
-      await fs.outputFile(path.join(outputDir, `${fileName}.js`), code)
+      await fs.outputFile(path.join(outputDir, `${fileName}.mjs`), esmCode)
+      await fs.outputFile(path.join(outputDir, `${fileName}.js`), cjsCode)
     }),
   )
-  const allModulesCode = transform(exports, allModulesBabelConfig).code
+  const allEsModulesCode = transform(exports, esmBabelConfig).code
+  const allCjsModulesCode = transform(exports, cjsBabelConfig).code
   await fs.outputFile(path.join(outputDir, 'index.d.ts'), definition)
-  await fs.outputFile(path.join(outputDir, 'index.js'), allModulesCode)
+  await fs.outputFile(path.join(outputDir, 'index.mjs'), allEsModulesCode)
+  await fs.outputFile(path.join(outputDir, 'index.js'), allCjsModulesCode)
 })()
